@@ -33,6 +33,8 @@ print_words() and print_top().
 
 import sys
 import operator
+import pdb
+
 
 def read_words(filename):
     words = []
@@ -46,29 +48,28 @@ def read_words(filename):
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
-def print_words(filename):
+def count_words(lst):
     count = {}
-    words = read_words(filename)
-    for word in words:
+    #pdb.set_trace()
+    for word in lst:
         if word in count.keys():
-            count[word.lower()] += 1;
+            count[word.lower()] += 1
         else:
-            count[word.lower()] = 1;
-    tmp = sorted(count.items())
-    for el in tmp:
+            count[word.lower()] = 1
+    return count
+
+
+def print_words(filename):
+    words = read_words(filename)
+    
+    for el in sorted(count_words(words).items()):
         print('{} {}'.format(*el))
 
 
 def print_top(filename):
-    count = {}
     words = read_words(filename)
-    for word in words:
-        if word in count.keys():
-            count[word.lower()] += 1;
-        else:
-            count[word.lower()] = 1;
-    tmp = sorted(count.items(), key=operator.itemgetter(1), reverse = True)[:20]
-    for el in tmp:
+
+    for el in sorted(count_words(words).items(), key=operator.itemgetter(1), reverse = True)[:20]:
         print('{} {}'.format(*el))
 
 ###

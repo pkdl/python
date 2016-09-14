@@ -7,8 +7,14 @@ import pdb
 # Example output: [1, 2, 3]
 def remove_adjacent(lst):
     #pdb.set_trace()
-    prev = None
     result = []
+
+    if lst == None:
+        return None
+    else:
+        prev = lst[0]
+        result.append(lst[0])
+
     for a in lst:
         if prev != a:
             result.append(a)
