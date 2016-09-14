@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+import math
+
 # Given a string, if its length is at least 3,
 # add 'ing' to its end.
 # Unless it already ends in 'ing', in which case
@@ -8,7 +11,10 @@
 # Example input: 'read'
 # Example output: 'reading'
 def verbing(s):
-    return
+    if s[-3:] == 'ing':
+        return s + 'ly'
+    else:
+        return s + 'ing'
 
 
 # Given a string, find the first appearance of the
@@ -20,7 +26,12 @@ def verbing(s):
 # Example input: 'This dinner is not that bad!'
 # Example output: 'This dinner is good!'
 def not_bad(s):
-    return
+    begin = s.find('not')
+    end = s.find('bad')
+    if begin > -1 and end > begin:
+        return s[:begin] + 'good' + s[end+3:]
+    else:
+        return s
 
 
 # Consider dividing a string into two halves.
@@ -34,4 +45,11 @@ def not_bad(s):
 # Example input: 'abcd', 'xy'
 # Example output: 'abxcdy'
 def front_back(a, b):
-    return
+    a_half = math.ceil(len(a)/2)
+    b_half = math.ceil(len(b)/2)
+    return a[:a_half] + b[:b_half] + a[a_half:] + b[b_half:]
+
+print(verbing('read'))
+print(verbing('reading'))
+print(not_bad('This dinner is not that bad!'))
+print(front_back('abcd', 'xyz'))
