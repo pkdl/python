@@ -9,7 +9,7 @@ def remove_adjacent(lst):
     #pdb.set_trace()
     result = []
 
-    if lst == None:
+    if not lst:
         return None
     else:
         prev = lst[0]
@@ -32,7 +32,7 @@ def linear_merge(lst1, lst2):
     i = 0
     j = 0
     #pdb.set_trace()
-    while( i < l1 and j < l2):
+    while i < l1 and j < l2:
         if lst1[i] < lst2[j]:
             result.append(lst1[i])
             i += 1

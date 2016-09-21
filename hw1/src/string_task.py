@@ -11,11 +11,13 @@ import math
 # Example input: 'read'
 # Example output: 'reading'
 def verbing(s):
-    if s[-3:] == 'ing':
-        return s + 'ly'
+    if len(s) >= 3:
+        if s[-3:] == 'ing':
+            return s + 'ly'
+        else:
+            return s + 'ing'
     else:
-        return s + 'ing'
-
+        return s
 
 # Given a string, find the first appearance of the
 # substring 'not' and 'bad'. If the 'bad' follows
@@ -35,10 +37,7 @@ def not_bad(s):
 
 
 def get_half(a):
-    if a % 2 == 0:
-        return a // 2
-    else:
-        return a // 2 + 1
+    return a // 2 + a % 2
 
 # Consider dividing a string into two halves.
 # If the length is even, the front and back halves are the same length.
@@ -55,7 +54,7 @@ def front_back(a, b):
     b_half = get_half( len(b) )
     return a[:a_half] + b[:b_half] + a[a_half:] + b[b_half:]
 
-print(verbing('read'))
+print(verbing('re'))
 print(verbing('reading'))
 print(not_bad('This dinner is not that bad!'))
 print(front_back('abcd', 'xyz'))
