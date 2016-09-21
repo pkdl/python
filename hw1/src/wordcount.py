@@ -52,10 +52,7 @@ def count_words(lst):
     count = {}
     #pdb.set_trace()
     for word in lst:
-        if word in count.keys():
-            count[word.lower()] += 1
-        else:
-            count[word.lower()] = 1
+        count[word.lower()] = count.get( word.lower(), 0) + 1
     return count
 
 
@@ -69,7 +66,7 @@ def print_words(filename):
 def print_top(filename):
     words = read_words(filename)
 
-    for el in sorted(count_words(words).items(), key=operator.itemgetter(1), reverse = True)[:20]:
+    for el in sorted(count_words(words).items(), key=lambda x: -x[1])[:20]:
         print('{} {}'.format(*el))
 
 ###

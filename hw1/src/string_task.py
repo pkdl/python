@@ -34,6 +34,12 @@ def not_bad(s):
         return s
 
 
+def get_half(a):
+    if a % 2 == 0:
+        return a // 2
+    else:
+        return a // 2 + 1
+
 # Consider dividing a string into two halves.
 # If the length is even, the front and back halves are the same length.
 # If the length is odd, we'll say that the extra char goes in the front half.
@@ -45,8 +51,8 @@ def not_bad(s):
 # Example input: 'abcd', 'xy'
 # Example output: 'abxcdy'
 def front_back(a, b):
-    a_half = math.ceil(len(a)/2)
-    b_half = math.ceil(len(b)/2)
+    a_half = get_half( len(a) )
+    b_half = get_half( len(b) )
     return a[:a_half] + b[:b_half] + a[a_half:] + b[b_half:]
 
 print(verbing('read'))
