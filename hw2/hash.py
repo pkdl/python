@@ -11,15 +11,24 @@ def md5(fname):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
-files = {}
+def scan_dir(dir):
+    files = {}
 
-for dirname, dirnames, filenames in os.walk(sys.argv[1]):
+    for dirname, dirnames, filenames in os.walk(dir):
 
-    for filename in filenames:
-        if not os.path.islink(os.path.join(dirname, filename)): #check if file a symlink
-            if not stat.S_ISSOCK(os.stat(os.path.join(dirname, filename)).st_mode): #check if file a socket
-                files[md5(os.path.join(dirname, filename))] = files.get( md5(os.path.join(dirname, filename)), '') + os.path.join(dirname, filename) + ':'
+        for filename in filenames:
+            if not(filename[:1] in '~.'):
+                fullname = os.path.join(dirname, filename)
+                if not os.path.islink(fullname): #check if file a symlink
+                    if not stat.S_ISSOCK(os.stat(fullname).st_mode): #check if file a socket
+                        files[md5(fullname)] = files.get( md5(fullname), '') + fullname + ':'
+    return files
 
-for hash in files:
-    if files[hash].count(':') > 1:
-        print(files[hash][:-1])
+def print_equal(dict):
+    for hash in dict:
+        if files[hash].count(':') > 1:
+            print(files[hash][:-1])    
+
+files = scan_dir(sys.argv[1])
+print_equal(files)
+
