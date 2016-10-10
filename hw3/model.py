@@ -84,6 +84,7 @@ class Function:
         self.body = body
         self.args = args
     def evaluate(self, scope):
+        result = Number(0)
         for obj in self.body:
             result = obj.evaluate(scope)
         return result
@@ -131,8 +132,8 @@ class BinaryOperation:
 
 class UnaryOperation:
     command = {
-        '!': lambda expr: Number(1) if expr == Number(0) else Number(0),
-        '-': lambda expr: Number(-expr.value)
+        '!': lambda expr: 1 if expr == Number(0) else 0,
+        '-': lambda expr: -expr.value
     }
 
     def __init__(self, op, expr):
@@ -141,7 +142,7 @@ class UnaryOperation:
     def evaluate(self, scope):
         expr = self.expr.evaluate(scope)
 
-        return self.command[self.op](self.expr)        
+        return Number(self.command[self.op](expr))        
 
 def test():
     print("### Scope tests:")
@@ -172,12 +173,12 @@ def test():
     pr = Print(call)
     pr.evaluate(scope)
 
+
     print("###Conditional tests")
     cond = Conditional(BinaryOperation(Number(5), ">", Number(7)), None, [Print(Number(19))])
     cond.evaluate(scope)
     cond1 = Conditional(BinaryOperation(Number(5), ">", Number(7)), None, [])
     cond1.evaluate(scope)
-
 
 
 def example():
