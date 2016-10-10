@@ -39,10 +39,15 @@ class Conditional:
         self.if_true = if_true
         self.if_false = if_false
     def evaluate(self, scope):
+        result = Number(0)
         if self.condtion.evaluate(scope) == Number(0):
+            if self.if_false == None or self.if_false == []:
+                return result
             for obj in self.if_false:
                 result = obj.evaluate(scope)
         else:
+            if self.if_true == None or self.if_true == []:
+                return result 
             for obj in self.if_true:
                 result = obj.evaluate(scope)
         return result
@@ -170,6 +175,8 @@ def test():
     print("###Conditional tests")
     cond = Conditional(BinaryOperation(Number(5), ">", Number(7)), None, [Print(Number(19))])
     cond.evaluate(scope)
+    cond1 = Conditional(BinaryOperation(Number(5), ">", Number(7)), None, [])
+    cond1.evaluate(scope)
 
 
 
