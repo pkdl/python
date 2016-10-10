@@ -65,7 +65,7 @@ class Read:
         self.name = name
     def evaluate(self, scope):
         result = Number(input())
-        scope[name] = result
+        scope[self.name] = result
         return result
 
 class FunctionCall:
