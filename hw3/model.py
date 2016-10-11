@@ -39,17 +39,17 @@ class Conditional:
         self.if_true = if_true
         self.if_false = if_false
     def evaluate(self, scope):
-        result = Number(0)
         if self.condtion.evaluate(scope) == Number(0):
-            if self.if_false == None or self.if_false == []:
-                return result
-            for obj in self.if_false:
-                result = obj.evaluate(scope)
+            body = self.if_false
         else:
-            if self.if_true == None or self.if_true == []:
-                return result 
-            for obj in self.if_true:
-                result = obj.evaluate(scope)
+            body = self.if_true
+
+        result = Number(0)
+        if body == None or body == []:
+            return result
+        for obj in body:
+            result = obj.evaluate(scope)
+
         return result
 
 class Print:
@@ -64,7 +64,7 @@ class Read:
     def __init__(self, name):
         self.name = name
     def evaluate(self, scope):
-        result = Number(input())
+        result = Number(int(input()))
         scope[self.name] = result
         return result
 
@@ -116,8 +116,8 @@ class BinaryOperation:
         '<' : lambda lhs, rhs: 1 if lhs < rhs else 0,
         '>=': lambda lhs, rhs: 1 if lhs >= rhs else 0,
         '<=': lambda lhs, rhs: 1 if lhs <= rhs else 0,
-        '&&': lambda lhs, rhs: 1 if lhs == Number(1) and rhs == Number(1) else 1,
-        '||': lambda lhs, rhs: 0 if lhs == Number(0) and rhs == Number(0) else 0
+        '&&': lambda lhs, rhs: lhs.value and rhs.value,
+        '||': lambda lhs, rhs: lhs.value or rhs.value
     }
 
     def __init__(self, lhs, op, rhs):
@@ -165,6 +165,9 @@ def test():
     a = Print(scope["num"])
     a.evaluate(scope)
 
+    b = Print(BinaryOperation(Number(15), '||', Number(0)))
+    b.evaluate(scope)
+
 
     print("###Functions tests")
     func = Function(["x", "y"], [BinaryOperation(Reference("x"), "+", Reference("y"))])
@@ -173,11 +176,17 @@ def test():
     pr = Print(call)
     pr.evaluate(scope)
 
+    func = Function([], [])
+    definition = FunctionDefinition("sum", func)
+    call = FunctionCall(definition, [])
+    pr = Print(call)
+    pr.evaluate(scope)
+
 
     print("###Conditional tests")
     cond = Conditional(BinaryOperation(Number(5), ">", Number(7)), None, [Print(Number(19))])
     cond.evaluate(scope)
-    cond1 = Conditional(BinaryOperation(Number(5), ">", Number(7)), None, [])
+    cond1 = Conditional(BinaryOperation(Number(5), "&&", Number(7)), None, [])
     cond1.evaluate(scope)
 
 
