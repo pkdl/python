@@ -19,19 +19,6 @@ class Number:
         self.value = value
     def evaluate(self, scope):
         return self
-    
-    def __eq__(self, other):
-        return self.value == other.value
-    def __ne__(self, other):
-        return self.value != other.value
-    def __lt__(self, other):
-        return self.value < other.value
-    def __gt__(self, other):
-        return self.value > other.value
-    def __le__(self, other):
-        return self.value <= other.value
-    def __ge__(self, other):
-        return self.value >= other.value
 
 class Conditional:
     def __init__(self, condtion, if_true, if_false = None):
@@ -39,15 +26,13 @@ class Conditional:
         self.if_true = if_true
         self.if_false = if_false
     def evaluate(self, scope):
-        if self.condtion.evaluate(scope) == Number(0):
+        if self.condtion.evaluate(scope).value == 0:
             body = self.if_false
         else:
             body = self.if_true
 
         result = Number(0)
-        if body == None or body == []:
-            return result
-        for obj in body:
+        for obj in body or []:
             result = obj.evaluate(scope)
 
         return result
@@ -110,12 +95,12 @@ class BinaryOperation:
         '*' : lambda lhs, rhs: lhs.value * rhs.value,
         '/' : lambda lhs, rhs: lhs.value // rhs.value,
         '%' : lambda lhs, rhs: lhs.value % rhs.value,
-        '==': lambda lhs, rhs: 1 if lhs == rhs else 0,
-        '!=': lambda lhs, rhs: 1 if lhs != rhs else 0,
-        '>' : lambda lhs, rhs: 1 if lhs > rhs else 0,
-        '<' : lambda lhs, rhs: 1 if lhs < rhs else 0,
-        '>=': lambda lhs, rhs: 1 if lhs >= rhs else 0,
-        '<=': lambda lhs, rhs: 1 if lhs <= rhs else 0,
+        '==': lambda lhs, rhs: 1 if lhs.value == rhs.value else 0,
+        '!=': lambda lhs, rhs: 1 if lhs.value != rhs.value else 0,
+        '>' : lambda lhs, rhs: 1 if lhs.value > rhs.value else 0,
+        '<' : lambda lhs, rhs: 1 if lhs.value < rhs.value else 0,
+        '>=': lambda lhs, rhs: 1 if lhs.value >= rhs.value else 0,
+        '<=': lambda lhs, rhs: 1 if lhs.value <= rhs.value else 0,
         '&&': lambda lhs, rhs: lhs.value and rhs.value,
         '||': lambda lhs, rhs: lhs.value or rhs.value
     }
